@@ -24,7 +24,7 @@ gem "httparty"
 gem "jsonapi-serializer"
 gem "devise_token_auth"
 gem "validate_url"
-
+gem "public_suffix"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -52,6 +52,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "factory_bot_rails"
   gem "faker"
+  gem "rspec-rails"
 end
 
 group :development do
@@ -63,4 +64,5 @@ group :test do
   # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
   gem "capybara"
   gem "selenium-webdriver"
+  gem "shoulda-matchers", "~> 5.0"
 end

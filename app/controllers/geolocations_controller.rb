@@ -51,9 +51,9 @@ class GeolocationsController < ApplicationController
 
   private
 
-  def geolocation_params
-    params.require(:geolocation).permit(:ip, :url, :city, :country_code, :region_code, :latitude, :longitude)
-  end
+    def geolocation_params
+      params.require(:geolocation).permit(:ip, :url, :city, :country_code, :region_code, :latitude, :longitude)
+    end
 
   def fetch_geolocation_from_service(ip_or_url)
     provider = :ipstack # Change this to switch providers

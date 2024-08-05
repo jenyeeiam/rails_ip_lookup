@@ -6,7 +6,7 @@ namespace :geolocations do
     generate_test_data(1000) # Generate 1000 test records
 
     CSV.foreach("tmp/test_geolocations.csv", headers: true) do |row|
-      Geolocation.create!(
+      geolocation = Geolocation.new(
         coordinates: row["coordinates"],
         ip: row["ip"],
         url: row["url"],
@@ -17,6 +17,12 @@ namespace :geolocations do
         created_at: row["created_at"],
         updated_at: row["updated_at"]
       )
+      if geolocation.save
+        puts "save successful"
+      else
+        puts "Error saving row #{row["url"]}:"
+        puts geolocation.errors.full_messages.join(", ")
+      end
     end
 
     puts "Imported #{Geolocation.count} geolocations"
