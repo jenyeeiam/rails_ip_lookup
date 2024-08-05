@@ -3,7 +3,7 @@ require_relative "generate_test_data"
 namespace :geolocations do
   desc "Generate and import test geolocation data"
   task import: :environment do
-    generate_test_data(1000) # Generate 1000 test records
+    generate_test_data(50)
 
     CSV.foreach("tmp/test_geolocations.csv", headers: true) do |row|
       geolocation = Geolocation.new(

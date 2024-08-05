@@ -25,6 +25,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_221741) do
     t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ip", "url"], name: "index_geolocations_on_ip_and_url", unique: true, where: "(url IS NOT NULL)"
+    t.index ["ip"], name: "index_geolocations_on_ip", unique: true, where: "(url IS NULL)"
   end
 
 end
