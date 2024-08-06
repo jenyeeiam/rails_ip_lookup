@@ -117,9 +117,9 @@ class GeolocationsController < ApplicationController
 
   private
 
-  def geolocation_params
-    params.permit(:ip, :url)
-  end
+    def geolocation_params
+      params.permit(:ip, :url)
+    end
 
   def fetch_geolocation_from_service(ip_or_url)
     provider = :ipstack  # Change this to change service provider

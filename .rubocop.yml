@@ -8,15 +8,15 @@ Layout/LineLength:
   Max: 150  # You can adjust this value to your preferred maximum line length
   Enabled: true
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   Enabled: true
   EnforcedStyle: indented
 
-Style/MultilineHashBraceLayout:
+Layout/MultilineHashBraceLayout:
   Enabled: true
   EnforcedStyle: symmetrical
 
-Style/MultilineMethodCallBraceLayout:
+Layout/MultilineMethodCallBraceLayout:
   Enabled: true
   EnforcedStyle: symmetrical
 # Overwrite or add rules to create your own house style

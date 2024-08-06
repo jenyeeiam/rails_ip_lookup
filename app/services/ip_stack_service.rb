@@ -15,12 +15,12 @@ class IpStackService
     response = HTTParty.get("http://api.ipstack.com/#{cleaned_ip_or_url}?access_key=#{api_key}")
     parsed_response = JSON.parse(response.body)
 
-    if parsed_response['success'] == false
-      error_info = parsed_response['error']
+    if parsed_response["success"] == false
+      error_info = parsed_response["error"]
       Rails.logger.error "IPStack API error: #{error_info['type']} - #{error_info['info']}"
       return nil
     end
-    
+
     # Process successful response here
     parsed_response
 
