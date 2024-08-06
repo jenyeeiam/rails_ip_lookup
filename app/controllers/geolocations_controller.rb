@@ -64,11 +64,11 @@ class GeolocationsController < ApplicationController
         render json: @existing_geolocation
       else
         # Fetch the data from the service
-        geolocation_data = fetch_geolocation_from_service(decoded_value)
+        geolocation_data = fetch_geolocation_from_service(ip_or_url)
         if geolocation_data
           geolocation = Geolocation.new(
             ip: geolocation_data["ip"],
-            url: is_ip?(decoded_value) ? nil : decoded_value,
+            url: url_param,
             coordinates: "POINT(#{geolocation_data["longitude"]} #{geolocation_data["latitude"]})",
           )
           if geolocation.save
@@ -117,9 +117,9 @@ class GeolocationsController < ApplicationController
 
   private
 
-    def geolocation_params
-      params.permit(:ip, :url, :latitude, :longitude)
-    end
+  def geolocation_params
+    params.permit(:ip, :url)
+  end
 
   def fetch_geolocation_from_service(ip_or_url)
     provider = :ipstack  # Change this to change service provider
