@@ -22,6 +22,18 @@ class Geolocation < ApplicationRecord
     where("ip = ? OR url = ?", value, normalized_value).first
   end
 
+  def self.valid_ip?(ip)
+    !!IPAddr.new(ip) rescue false
+  end
+
+  def self.valid_url_format?(url)
+    return false if url.blank?
+    return false if valid_ip?(url) # Ensure it's not an IP address
+
+    # Regex for validating URLs and domain names
+    url =~ %r{\A(?:https?:\/\/)?(?:www\.)?(?:[a-zA-Z0-9-]+\.)+[a-zA-Z]{2,6}(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\z}
+  end
+
   private
 
     def self.normalize_url_for_query(url)
@@ -52,10 +64,7 @@ class Geolocation < ApplicationRecord
   def custom_url_format
     return if url.blank? # Allow blank URLs
 
-    # Regex for validating URLs and domain names
-    url_regex = %r{\A(?:https?:\/\/)?(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{2,6}(?:[-a-zA-Z0-9()@:%_\+.~#?&//=]*)\z}
-
-    unless url =~ url_regex
+    unless self.class.valid_url_format?(url)
       errors.add(:url, "must be a valid URL or domain name")
     end
   end

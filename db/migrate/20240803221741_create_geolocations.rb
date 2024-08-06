@@ -15,7 +15,7 @@ class CreateGeolocations < ActiveRecord::Migration[7.1]
     end
 
     # Adding unique index on ip and url, allowing url to be NULL
-    add_index :geolocations, [:ip, :url], unique: true, where: 'url IS NOT NULL'
+    add_index :geolocations, [ :ip, :url ], unique: true, where: 'url IS NOT NULL'
     add_index :geolocations, :ip, unique: true, where: 'url IS NULL'
   end
 end

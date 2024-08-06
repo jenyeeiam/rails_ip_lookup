@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
   get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
 
-  resources :geolocations, only: [ :create, :destroy ] do
+  resources :geolocations, only: [ :index, :create, :destroy ] do
     collection do
       get ":value", to: "geolocations#show", as: "show", constraints: { value: /[^\/]+/ }
       delete ":value", to: "geolocations#destroy", as: "destroy", constraints: { value: /.+/ }

@@ -14,6 +14,9 @@ class IpStackService
     end
     response = HTTParty.get("http://api.ipstack.com/#{cleaned_ip_or_url}?access_key=#{api_key}")
     JSON.parse(response.body)
+  rescue Net::OpenTimeout, Net::ReadTimeout => e
+    Rails.logger.error "Timeout error fetching geolocation from ipstack: #{e.message}"
+    nil
   rescue StandardError => e
     Rails.logger.error "Error fetching geolocation from ipstack: #{e.message}"
     nil
