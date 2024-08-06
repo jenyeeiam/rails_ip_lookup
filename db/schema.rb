@@ -19,10 +19,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_08_03_221741) do
     t.geography "coordinates", limit: {:srid=>4326, :type=>"st_point", :geographic=>true}
     t.string "ip"
     t.string "url"
-    t.string "country_code"
-    t.string "country_name"
-    t.string "region_code"
-    t.string "city"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["ip", "url"], name: "index_geolocations_on_ip_and_url", unique: true, where: "(url IS NOT NULL)"

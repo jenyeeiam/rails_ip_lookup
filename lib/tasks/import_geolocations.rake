@@ -10,10 +10,6 @@ namespace :geolocations do
         coordinates: row["coordinates"],
         ip: row["ip"],
         url: row["url"],
-        country_code: row["country_code"],
-        country_name: row["country_name"],
-        region_code: row["region_code"],
-        city: row["city"],
         created_at: row["created_at"],
         updated_at: row["updated_at"]
       )

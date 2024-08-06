@@ -14,10 +14,6 @@ RSpec.describe Geolocation, type: :model do
     it { should allow_value("https://example.com").for(:url) }
     it { should allow_value("example.com").for(:url) }
     it { should_not allow_value("invalid_url").for(:url) }
-    it { should validate_length_of(:country_code).is_at_most(3) }
-    it { should validate_length_of(:country_name).is_at_most(100) }
-    it { should validate_length_of(:region_code).is_at_most(10) }
-    it { should validate_length_of(:city).is_at_most(100) }
   end
 
   describe "callbacks" do

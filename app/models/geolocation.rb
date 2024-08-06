@@ -12,11 +12,6 @@ class Geolocation < ApplicationRecord
   validates :url, uniqueness: { allow_blank: true } # Ensure URLs are unique
   validate :custom_url_format
 
-  validates :country_code, length: { maximum: 3 }
-  validates :country_name, length: { maximum: 100 }
-  validates :region_code, length: { maximum: 10 }
-  validates :city, length: { maximum: 100 }
-
   def self.find_by_ip_or_url(value)
     normalized_value = normalize_url_for_query(value)
     where("ip = ? OR url = ?", value, normalized_value).first
