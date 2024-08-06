@@ -4,8 +4,8 @@ class GeolocationsController < ApplicationController
   before_action :sanitize_params, only: [ :show, :destroy, :create ]
 
   def index
-    @geolocations = Geolocation.order(created_at: :desc).limit(100)
-    render json: @geolocations
+    geolocations = Geolocation.order(created_at: :desc).limit(100)
+    render json: geolocations
   end
 
   def show
@@ -21,21 +21,21 @@ class GeolocationsController < ApplicationController
     end
 
     begin
-      @geolocation = Geolocation.find_by_ip_or_url(params[:value])
-      if @geolocation
-        render json: @geolocation
+      existing_geolocation = Geolocation.find_by_ip_or_url(params[:value])
+      if existing_geolocation
+        render json: existing_geolocation
       else
         geolocation_data = fetch_geolocation_from_service(decoded_value)
         if geolocation_data
-          geolocation = Geolocation.new(
+          new_geolocation = Geolocation.new(
             ip: geolocation_data["ip"],
             url: is_ip?(decoded_value) ? nil : decoded_value,
             coordinates: "POINT(#{geolocation_data["longitude"]} #{geolocation_data["latitude"]})",
           )
-          if geolocation.save
-            render json: geolocation, status: :created
+          if new_geolocation.save
+            render json: new_geolocation, status: :created
           else
-            render json: { errors: geolocation.errors.full_messages }, status: :unprocessable_entity
+            render json: { errors: new_geolocation.errors.full_messages }, status: :unprocessable_entity
           end
         else
           render json: { error: "Unable to fetch geolocation data" }, status: :unprocessable_entity
@@ -63,16 +63,23 @@ class GeolocationsController < ApplicationController
       if @existing_geolocation
         render json: @existing_geolocation
       else
-        @geolocation = Geolocation.new(geolocation_params.except(:latitude, :longitude))
-        @geolocation.coordinates = "POINT(#{params[:longitude]} #{params[:latitude]})"
-
-        if @geolocation.save
-          render json: @geolocation, status: :created
+        # Fetch the data from the service
+        geolocation_data = fetch_geolocation_from_service(ip_or_url)
+        if geolocation_data
+          geolocation = Geolocation.new(
+            ip: geolocation_data["ip"],
+            url: url_param,
+            coordinates: "POINT(#{geolocation_data["longitude"]} #{geolocation_data["latitude"]})",
+          )
+          if geolocation.save
+            render json: geolocation, status: :created
+          else
+            render json: { errors: geolocation.errors.full_messages }, status: :unprocessable_entity
+          end
         else
-          render json: @geolocation.errors, status: :unprocessable_entity
+          render json: { error: "Unable to fetch geolocation data" }, status: :unprocessable_entity
         end
       end
-
 
     rescue ActiveRecord::ConnectionNotEstablished, ActiveRecord::StatementInvalid => e
       render json: { error: "Database connection error: #{e.message}" }, status: :service_unavailable
@@ -111,7 +118,7 @@ class GeolocationsController < ApplicationController
   private
 
     def geolocation_params
-      params.permit(:ip, :url, :latitude, :longitude)
+      params.permit(:ip, :url)
     end
 
   def fetch_geolocation_from_service(ip_or_url)
