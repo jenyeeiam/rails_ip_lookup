@@ -99,7 +99,7 @@ RSpec.describe GeolocationsController, type: :controller do
           )
 
           allow_any_instance_of(Geolocation).to receive(:save).and_return(false)
-          allow_any_instance_of(Geolocation).to receive_message_chain(:errors, :full_messages).and_return(["Some error"])
+          allow_any_instance_of(Geolocation).to receive_message_chain(:errors, :full_messages).and_return([ "Some error" ])
         end
 
         it "returns an error when saving fails" do
@@ -216,7 +216,7 @@ RSpec.describe GeolocationsController, type: :controller do
           )
 
           allow_any_instance_of(Geolocation).to receive(:save).and_return(false)
-          allow_any_instance_of(Geolocation).to receive_message_chain(:errors, :full_messages).and_return(["Some error"])
+          allow_any_instance_of(Geolocation).to receive_message_chain(:errors, :full_messages).and_return([ "Some error" ])
         end
 
         it "returns an error when saving fails" do

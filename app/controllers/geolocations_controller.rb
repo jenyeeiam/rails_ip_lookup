@@ -1,7 +1,7 @@
 class GeolocationsController < ApplicationController
   protect_from_forgery with: :null_session
 
-  before_action :sanitize_params, only: [:show, :destroy, :create]
+  before_action :sanitize_params, only: [ :show, :destroy, :create ]
 
   def index
     begin
@@ -67,7 +67,7 @@ class GeolocationsController < ApplicationController
       ip_or_url = ip_param || url_param
       existing_geolocation = Geolocation.find_by_ip_or_url(ip_or_url)
       if existing_geolocation
-        render json: existing_geolocation
+        render json: existing_geolocation, status: :ok
       else
         # Fetch the data from the service
         geolocation_data = fetch_geolocation_from_service(ip_or_url)
@@ -122,9 +122,9 @@ class GeolocationsController < ApplicationController
 
   private
 
-  def geolocation_params
-    params.permit(:ip, :url)
-  end
+    def geolocation_params
+      params.permit(:ip, :url)
+    end
 
   def fetch_geolocation_from_service(ip_or_url)
     provider = :ipstack  # Change this to change service provider
