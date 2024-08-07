@@ -1,0 +1,53 @@
+name: Rails CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:14
+        env:
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: ""
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.3
+        bundler-cache: true
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y postgresql-14-postgis-3 postgresql-14-postgis-3-scripts
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+
+    - name: Set up database
+      run: |
+        cp config/database.yml.ci config/database.yml
+        bin/rails db:create
+        bin/rails db:schema:load
+
+    - name: Run tests
+      run: |
+        bundle exec rspec
