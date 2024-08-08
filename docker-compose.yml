@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgis/postgis:14-3.3
+    environment:
+      POSTGRES_USER: ipgeo
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: ipgeo_production
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build: .
+    command: bundle exec rails server -b 0.0.0.0
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgres://ipgeo:yourpassword@db:5432/ipgeo_production"
+      IPGEO_DATABASE_PASSWORD: yourpassword
+      RAILS_MAX_THREADS: 5
+      DATABASE_HOST: db
+      DATABASE_USERNAME: ipgeo
+      DATABASE_PASSWORD: yourpassword
+      DATABASE_NAME: ipgeo_production
+
+volumes:
+  postgres_data:

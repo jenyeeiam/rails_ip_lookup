@@ -1,5 +1,5 @@
 require_relative "boot"
-
+require "active_record/connection_adapters/postgis_adapter"
 require "rails/all"
 
 # Require the gems listed in Gemfile, including any gems
@@ -16,6 +16,8 @@ module Ipgeo
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
+
+    config.active_record.schema_format = :sql
 
     # Configuration for the application, engines, and railties goes here.
     #

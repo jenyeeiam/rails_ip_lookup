@@ -392,6 +392,7 @@ DEPENDENCIES
   puma (>= 5.0)
   rails (~> 7.1)
   redis (>= 4.0.1)
+  rgeo
   rspec-rails
   rubocop-rails-omakase
   selenium-webdriver
