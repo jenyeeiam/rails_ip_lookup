@@ -12,3 +12,9 @@
 ipstack:
    api_key: API_KEY
 ```
+
+### Run in Docker
+```
+docker compose build
+docker compose up
+```
