@@ -19,12 +19,15 @@ gem "jbuilder"
 # Use Redis adapter to run Action Cable in production
 gem "redis", ">= 4.0.1"
 gem "activerecord-postgis-adapter"
+gem "rgeo"
+
 gem "dotenv-rails"
 gem "httparty"
 gem "jsonapi-serializer"
 gem "devise_token_auth"
 gem "validate_url"
 gem "public_suffix"
+gem "faker"
 
 # Use Kredis to get higher-level data types in Redis [https://github.com/rails/kredis]
 # gem "kredis"
@@ -51,7 +54,6 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
   gem "factory_bot_rails"
-  gem "faker"
   gem "rspec-rails"
 end
 

@@ -80,6 +80,8 @@ test:
 #
 production:
   <<: *default
+  url: <%= ENV.fetch('DATABASE_URL', '').sub(/^postgres/, "postgis") %>
+  schema_search_path: public,postgis
   database: ipgeo_production
   username: ipgeo
   password: <%= ENV["IPGEO_DATABASE_PASSWORD"] %>
